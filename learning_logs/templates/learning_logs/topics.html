@@ -6,19 +6,23 @@
 </head>
 <body>
 {% extends "learning_logs/base.html" %}
+
+{% block header %}
+    <h1>Topics</h1>
+{% endblock header %}
+
 {% block content %}
     <p>topics</p>
     <ul>
         {% for topic in topics %}
-            <li>
+            <h3>
                 <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
-
-            </li>
+            </h3>
         {% empty %}
             <li>no topics</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'learning_logs:new_topic' %}">add a new topic</a>
+    <h3><a href="{% url 'learning_logs:new_topic' %}">add a new topic</a></h3>
 {% endblock content %}
 </body>
 </html>
