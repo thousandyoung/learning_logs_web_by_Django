@@ -1,2 +1,4 @@
 # Project exclude paths
 /learn_env/
+__pycache__
+*.sqlite3
