@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-)p&d+qe262dww0r#*4x*988xi5u&a$-bc(x1859+*zjy_fr7uy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','localhost','120.79.208.137']
 
 # Application definition
 
@@ -131,23 +131,23 @@ BOOTSTRAP3 = {
     'include_jquery': True,
 }
 
-if os.getcwd() == '/app':
-    import dj_database_url
-
-    DATABASES = {
-        'default': dj_database_url.config(default='postgres://localhost')
-    }
-    # 让request.is_secure()承认X-Forwarded-Proto头 
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    # 支持所有的主机头（host header）
-    ALLOWED_HOSTS = ['*']
-    # 静态资产配置
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
-    )
+# if os.getcwd() == '/app':
+#     import dj_database_url
+#
+#     DATABASES = {
+#         'default': dj_database_url.config(default='postgres://localhost')
+#     }
+#     # 让request.is_secure()承认X-Forwarded-Proto头 
+#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#     # 支持所有的主机头（host header）
+#     ALLOWED_HOSTS = ['*']
+#     # 静态资产配置
+#     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#     STATIC_URL = '/static/'
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#     STATICFILES_DIRS = (
+#         os.path.join(BASE_DIR, 'static'),
+#     )
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'  # django 3.0 + 默认为 deny
 
