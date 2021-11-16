@@ -7,16 +7,24 @@
 <body>
 {% extends "learning_logs/base.html" %}
 {% load bootstrap3 %}
-  {% block header %}
-        <h2>Add a new entry:</h2>
-    {% endblock header %}
+{% block header %}
+    <h2>Add a new entry:</h2>
+{% endblock header %}
 {% block content %}
+
+
     <form action="{% url 'learning_logs:new_entry' topic.id %}" method="post" class="form">
+
         {% csrf_token %}
+        {{ form.media }}
         {% bootstrap_form form %}
+
+        {#        {{ form.as_p }}#}
+
         {% buttons %}
-            <button name="submit">add entry</button>
+            <button type="submit" class="btn btn-success  mb-2">add entry</button>
         {% endbuttons %}
+
 
     </form>
 {% endblock content %}

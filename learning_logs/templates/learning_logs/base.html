@@ -5,9 +5,79 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Learning Log</title>
+    <title>Markdown Log</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <style>
+        body {
+        {#background:url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/21/20181/cad2441dd3252cf53f12154412286ba0.jpg');#} padding: 50px;
+        }
+
+        #login-dp {
+            min-width: 250px;
+            padding: 14px 14px 0;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, .8);
+        }
+
+        #login-dp .help-block {
+            font-size: 12px
+        }
+
+        #login-dp .bottom {
+            background-color: rgba(255, 255, 255, .8);
+            border-top: 1px solid #ddd;
+            clear: both;
+            padding: 14px;
+        }
+
+        #login-dp .social-buttons {
+            margin: 12px 0
+        }
+
+        #login-dp .social-buttons a {
+            width: 49%;
+        }
+
+        #login-dp .form-group {
+            margin-bottom: 10px;
+        }
+
+        .btn-fb {
+            color: #fff;
+            background-color: #3b5998;
+        }
+
+        .btn-fb:hover {
+            color: #fff;
+            background-color: #496ebc
+        }
+
+        .btn-tw {
+            color: #fff;
+            background-color: #55acee;
+        }
+
+        .btn-tw:hover {
+            color: #fff;
+            background-color: #59b5fa;
+        }
+
+        @media (max-width: 768px) {
+            #login-dp {
+                background-color: inherit;
+                color: #fff;
+            }
+
+            #login-dp .bottom {
+                background-color: inherit;
+                border-top: 0 none;
+            }
+        }
+
+
+    </style>
+
 </head>
 <body>
 <!-- Static navbar -->
@@ -18,13 +88,23 @@
                     data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
             </button>
-            <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
+            <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Markdown Log</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'learning_logs:topics' %}">Topics</a></li>
+                {#                <li><a href="{% url 'learning_logs:title' %}">Title</a></li>#}
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li class="pull-right">
+                    <form action="{% url 'learning_logs:search_entry'%}" class="navbar-form navbar-left" role="search" method="get"  >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search your log" name="search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </li>
                 {% if user.is_authenticated %}
                     <li><a>Hello, {{ user.username }}.</a></li>
                     <li><a href="{% url 'users:logout' %}">log out</a></li>

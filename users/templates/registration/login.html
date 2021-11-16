@@ -16,7 +16,7 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-             <button name="submit">log in</button>
+             <button name="submit" class="btn btn-primary">log in</button>
         {% endbuttons %}
 
         <input type="hidden" name="next" value="{% url 'learning_logs:index' %}">

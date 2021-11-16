@@ -8,21 +8,37 @@
 {% extends "learning_logs/base.html" %}
 
 {% block header %}
-    <h1>Topics</h1>
+    <h1>Topics
+        <button type="button" class="btn btn-success glyphicon glyphicon-plus pull-right"
+                    onclick="location.href='{% url 'learning_logs:new_topic'  %}'"></button>
+{#        <small> <a class="pull-right" href="{% url 'learning_logs:new_topic' %}">add a new topic</a></small>#}
+
+    </h1>
 {% endblock header %}
 
 {% block content %}
-    <p>topics</p>
-    <ul>
+    <ul class="list-group">
         {% for topic in topics %}
-            <h3>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
                 <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
-            </h3>
+                <span class="badge alert-info">{{ topic.entry_num }}</span>
+{#                <buton type="button" class="badge alert-danger pull-right" style="color:rgb(212,106,64)">#}
+{#                    <span class="glyphicon glyphicon-remove"></span>#}
+{#                </buton>#}
+
+            </li>
+
         {% empty %}
-            <li>no topics</li>
+            <div class="alert alert-info" role="alert">
+                There are no topics yet
+            </div>
+
+
         {% endfor %}
     </ul>
-    <h3><a href="{% url 'learning_logs:new_topic' %}">add a new topic</a></h3>
+
+
 {% endblock content %}
 </body>
 </html>

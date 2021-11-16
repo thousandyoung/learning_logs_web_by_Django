@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>topic</title>
+    <title>search result</title>
 
 </head>
 <body>
@@ -11,13 +11,15 @@
 {% block header %}
     <p>
     <h2>
-        {{ topic }}
-        <div class="btn-group pull-right" role="group" aria-label="Basic example">
+
+        Search Result of {{ search }}
+        <p class="btn-group pull-right" role="group" aria-label="Basic example">
             <button type="button" class="glyphicon glyphicon-trash btn btn-danger" data-toggle="modal"
                     data-target="#exampleModalCenter"></button>
             <button type="button" class="btn btn-success glyphicon glyphicon-plus "
-                    onclick="location.href='{% url 'learning_logs:new_entry' topic.id %}'"></button>
-        </div>
+                    onclick="location.href='{% url 'learning_logs:search_entry' %}'"></button>
+        </p>
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -35,7 +37,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-danger"
-                                onclick="location.href='{% url 'learning_logs:delete_topic' topic.id %}'">Delete
+                                onclick="location.href='{% url 'learning_logs:search_entry' %}'">Delete
                         </button>
                     </div>
                 </div>
@@ -49,6 +51,7 @@
 {% endblock header %}
 
 {% block content %}
+
 
 
     {% for entry in entry_page %}
@@ -77,7 +80,7 @@
 
     {% endfor %}
     <div class="pagination ">
-    <div class="m-auto">
+        <div class="m-auto">
         <span class="step-links">
             <!-- 如果不是第一页，则显示上翻按钮 -->
 
@@ -113,8 +116,8 @@
                 </a>
             {% endif %}
         </span>
+        </div>
     </div>
-</div>
 
 {% endblock content %}
 </body>

@@ -1,0 +1,39 @@
+{% extends "learning_logs/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ entry.title }}</title>
+    <!-- add after bootstrap.min.css -->
+
+
+</head>
+<body>
+
+{% load bootstrap3 %}
+{% block header %}
+    <h2>{{ entry.title }}</h2>
+{% endblock header %}
+
+{% block content %}
+    {% autoescape off %}
+
+        <aside>
+           <h4><strong>目录</strong></h4>
+            <hr>
+            <p data-spy="scroll" data-target="#toc">
+                {{ toc|safe }}
+            </p>
+
+
+        </aside>
+        <p>
+         {{ entry.body|safe }}
+        </p>
+
+
+
+    {% endautoescape %}
+{% endblock content %}
+</body>
+</html>

@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from .models import Topic, Entry
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse
 from .forms import TopicForm, EntryForm
 from django.contrib.auth.decorators import login_required
-
+import markdown
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+import  re
 
 # Create your views here.
 def index(request):
@@ -20,12 +24,33 @@ def topics(request):
 
 
 @login_required
+def search_entry(request):
+    entries = Entry.objects.order_by('date_added')
+    search = request.GET.get('search')
+    if search:
+        entries = Entry.objects.filter(
+            Q(title__icontains=search) | Q(body__icontains=search)
+        ).order_by('date_added')
+    else:
+        search = ''
+
+    paginator = Paginator(entries, 4)
+    page = request.GET.get('page')
+    entry_page = paginator.get_page(page)
+    context = {'entries': entries, 'entry_page': entry_page, 'search': search}
+    return render(request, 'learning_logs/search_result.html', context)
+
+
+@login_required
 def topic(request, topic_id):
     topic = Topic.objects.get(id=topic_id)
     if topic.owner != request.user:
         raise Http404
     entries = topic.entry_set.order_by('date_added')
-    context = {'topic': topic, 'entries': entries}
+    paginator = Paginator(entries, 4)
+    page = request.GET.get('page')
+    entry_page = paginator.get_page(page)
+    context = {'topic': topic, 'entries': entries, 'entry_page': entry_page}
     return render(request, 'learning_logs/topic.html', context)
 
 
@@ -37,7 +62,7 @@ def new_topic(request):
     else:
         form = TopicForm(request.POST)
         if form.is_valid():
-            #save（） provides a new database object
+            # save（） provides a new database object
             new_topic = form.save(commit=False)
             new_topic.owner = request.user
             new_topic.save()
@@ -59,6 +84,8 @@ def new_entry(request, topic_id):
             new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
+            topic.entry_num += 1
+            topic.save()
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
@@ -77,3 +104,44 @@ def edit_entry(request, entry_id):
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
+
+
+@login_required
+def show_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+
+    md = markdown.Markdown(
+        extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            'markdown.extensions.toc',
+        ])
+    entry.body = md.convert(entry.text)
+    m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+    entry.toc = m.group(1) if m is not None else '???'
+    context = {'entry': entry, 'toc': entry.toc}
+    return render(request, 'learning_logs/show_entry.html', context)
+
+
+@login_required
+def delete_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    result = entry.delete()
+    topic.entry_num -= 1
+    topic.save()
+    if result:
+        return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
+    else:
+        return HttpResponse("failed to delete entry")
+
+
+@login_required
+def delete_topic(request, topic_id):
+    topic = Topic.objects.get(id=topic_id)
+    topic.entry_set.all().delete()
+    result = topic.delete()
+    if result:
+        return HttpResponseRedirect(reverse('learning_logs:topics'))
+    else:
+        return HttpResponse("failed to delete topic")

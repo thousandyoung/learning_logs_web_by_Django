@@ -15,10 +15,9 @@
     {% csrf_token %}
     {% bootstrap_form form %}
 
-    {% buttons %}
-    <button name="submit">add topic</button>
-    {% endbuttons %}
-
+      {% buttons %}
+            <button type="submit" class="btn btn-success  mb-2">add topic</button>
+        {% endbuttons %}
 </form>
 {% endblock content %}
 </body>
