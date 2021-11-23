@@ -9,26 +9,26 @@
 
 </head>
 <body>
-
 {% load bootstrap3 %}
+
 {% block header %}
     <h2>{{ entry.title }}</h2>
 {% endblock header %}
 
 {% block content %}
     {% autoescape off %}
-
-        <aside>
-           <h4><strong>目录</strong></h4>
-            <hr>
-            <p data-spy="scroll" data-target="#toc">
-                {{ toc|safe }}
-            </p>
-
-
-        </aside>
+{##}
+{#        <aside>#}
+{#           <h4><strong>目录</strong></h4>#}
+{#            <hr>#}
+{#            <p data-spy="scroll" data-target="#toc">#}
+{#                {{ toc|safe }}#}
+{#            </p>#}
+{##}
+{##}
+{#        </aside>#}
         <p>
-         {{ entry.body|safe }}
+         {{ entry.text|safe }}
         </p>
 
 

@@ -8,7 +8,8 @@ import markdown
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Q
-import  re
+import re
+
 
 # Create your views here.
 def index(request):
@@ -109,17 +110,23 @@ def edit_entry(request, entry_id):
 @login_required
 def show_entry(request, entry_id):
     entry = Entry.objects.get(id=entry_id)
+    # md = markdown.Markdown(
+    #     extensions=[
+    #         'markdown.extensions.extra',
+    #         'markdown.extensions.codehilite',
+    #         'markdown.extensions.toc',
+    #     ])
+    # entry.body = md.convert(entry.text)
+    # m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
+    # entry.toc = m.group(1) if m is not None else '???'
+    # context = {'entry': entry, 'toc': entry.toc}
+    entry.text = markdown.markdown(entry.text, extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
 
-    md = markdown.Markdown(
-        extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            'markdown.extensions.toc',
-        ])
-    entry.body = md.convert(entry.text)
-    m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
-    entry.toc = m.group(1) if m is not None else '???'
-    context = {'entry': entry, 'toc': entry.toc}
+    ])
+    context = {'entry':entry}
     return render(request, 'learning_logs/show_entry.html', context)
 
 
