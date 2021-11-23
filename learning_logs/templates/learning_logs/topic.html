@@ -7,7 +7,6 @@
 </head>
 <body>
 {% extends 'learning_logs/base.html' %}
-
 {% block header %}
     <p>
     <h2>
@@ -65,6 +64,15 @@
             </div>
             <div class="panel-body">
                 {{ entry.date_added|date:'M d, Y H:i' }}
+                <span>
+                    {% for tag in entry.tags.all %}
+                        <a href="{% url 'learning_logs:search_entry'%}?tag={{ tag }}"
+                           class="badge alert-info pull-right"
+                        >
+                         {{ tag }}
+                        </a>
+                    {% endfor %}
+                </span>
 
             </div>
         </div> <!-- panel -->
@@ -77,8 +85,10 @@
 
     {% endfor %}
     <div class="pagination ">
-    <div class="m-auto">
+
+        <div class="m-auto">
         <span class="step-links">
+
             <!-- 如果不是第一页，则显示上翻按钮 -->
 
             {% if entry_page.has_previous %}
@@ -113,8 +123,8 @@
                 </a>
             {% endif %}
         </span>
+        </div>
     </div>
-</div>
 
 {% endblock content %}
 </body>

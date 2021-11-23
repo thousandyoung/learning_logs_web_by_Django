@@ -68,7 +68,15 @@
             </div>
             <div class="panel-body">
                 {{ entry.date_added|date:'M d, Y H:i' }}
-
+                <span>
+                    {% for tag in entry.tags.all %}
+                        <a href="{% url 'learning_logs:search_entry'%}?tag={{ tag }}"
+                           class="badge alert-info pull-right"
+                        >
+                         {{ tag }}
+                        </a>
+                    {% endfor %}
+                </span>
             </div>
         </div> <!-- panel -->
 

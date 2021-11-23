@@ -28,17 +28,25 @@ def topics(request):
 def search_entry(request):
     entries = Entry.objects.order_by('date_added')
     search = request.GET.get('search')
+    tag = request.GET.get('tag')
+
+    # 标签查询集
+    if tag and tag != 'None':
+        entries = Entry.objects.filter(tags__name__in=[tag])
+
     if search:
         entries = Entry.objects.filter(
-            Q(title__icontains=search) | Q(body__icontains=search)
+            Q(title__icontains=search) | Q(body__icontains=search) | Q(tags__in=[tag])
         ).order_by('date_added')
     else:
         search = ''
 
-    paginator = Paginator(entries, 4)
+
+
+    paginator = Paginator(entries, 7)
     page = request.GET.get('page')
     entry_page = paginator.get_page(page)
-    context = {'entries': entries, 'entry_page': entry_page, 'search': search}
+    context = {'entries': entries, 'entry_page': entry_page, 'search': search, 'tag': tag}
     return render(request, 'learning_logs/search_result.html', context)
 
 
@@ -48,7 +56,7 @@ def topic(request, topic_id):
     if topic.owner != request.user:
         raise Http404
     entries = topic.entry_set.order_by('date_added')
-    paginator = Paginator(entries, 4)
+    paginator = Paginator(entries, 7)
     page = request.GET.get('page')
     entry_page = paginator.get_page(page)
     context = {'topic': topic, 'entries': entries, 'entry_page': entry_page}
@@ -87,6 +95,7 @@ def new_entry(request, topic_id):
             new_entry.save()
             topic.entry_num += 1
             topic.save()
+            form.save_m2m()
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
@@ -102,6 +111,7 @@ def edit_entry(request, entry_id):
         form = EntryForm(instance=entry, data=request.POST)
         if form.is_valid():
             form.save()
+            # form.save_m2m()
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
@@ -110,16 +120,6 @@ def edit_entry(request, entry_id):
 @login_required
 def show_entry(request, entry_id):
     entry = Entry.objects.get(id=entry_id)
-    # md = markdown.Markdown(
-    #     extensions=[
-    #         'markdown.extensions.extra',
-    #         'markdown.extensions.codehilite',
-    #         'markdown.extensions.toc',
-    #     ])
-    # entry.body = md.convert(entry.text)
-    # m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>', md.toc, re.S)
-    # entry.toc = m.group(1) if m is not None else '???'
-    # context = {'entry': entry, 'toc': entry.toc}
     entry.text = markdown.markdown(entry.text, extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.codehilite',

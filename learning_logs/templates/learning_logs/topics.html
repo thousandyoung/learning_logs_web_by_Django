@@ -6,7 +6,7 @@
 </head>
 <body>
 {% extends "learning_logs/base.html" %}
-
+{% include 'learning_logs/back_to_top_func.html' %}
 {% block header %}
     <h1>Topics
         <button type="button" class="btn btn-success glyphicon glyphicon-plus pull-right"
@@ -37,6 +37,7 @@
 
         {% endfor %}
     </ul>
+
 
 
 {% endblock content %}

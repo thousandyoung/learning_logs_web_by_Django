@@ -119,12 +119,14 @@
     </div>
 </nav>
 <div class="container">
+ {% include 'learning_logs/back_to_top_func.html' %}
     <div class="page-header">
         {% block header %}{% endblock header %}
     </div>
     <div>
         {% block content %}{% endblock content %}
     </div>
+
 </div> <!-- /container -->
 </body>
 </html>

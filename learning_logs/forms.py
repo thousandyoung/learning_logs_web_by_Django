@@ -17,6 +17,7 @@ class TopicForm(forms.ModelForm):
 class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
-        fields = {'title','text'}
+        fields = {'title','text','tags'}
         labels = {'text': ''}
         widgets = {'text': forms.Textarea()}
+

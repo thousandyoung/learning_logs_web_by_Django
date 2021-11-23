@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'users',
     'bootstrap3',
     'mdeditor',
+    'taggit',
 ]
 
 MIDDLEWARE = [

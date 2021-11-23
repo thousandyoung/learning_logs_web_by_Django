@@ -14,11 +14,9 @@
 
 
     <form action="{% url 'learning_logs:new_entry' topic.id %}" method="post" class="form">
-
         {% csrf_token %}
-        {{ form.media }}
         {% bootstrap_form form %}
-
+        {{ form.media }}
         {#        {{ form.as_p }}#}
 
         {% buttons %}

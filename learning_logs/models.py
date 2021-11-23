@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from mdeditor.fields import MDTextField
-
+from taggit.managers import TaggableManager
 # Create your models here.
 class Topic(models.Model):
     text = models.CharField(max_length=200)
@@ -18,6 +18,7 @@ class Entry(models.Model):
     body = models.TextField(default="The entry is empty")
     text = MDTextField()
     date_added = models.DateTimeField(auto_now_add=True)
+    tags = TaggableManager(blank=True)
     class Meta:
         verbose_name_plural='Entries'
     def __str__(self):
