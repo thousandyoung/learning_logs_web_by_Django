@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from django.contrib.auth import logout, login, authenticate
 from django.http import HttpResponseRedirect
@@ -9,16 +8,16 @@ from django.urls import reverse
 
 def register(request):
     """register new user"""
-    if request.method !='POST':
+    if request.method != 'POST':
         form = UserCreationForm()
     else:
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
-            new_user=form.save()
+            new_user = form.save()
             # login and redirect to main page
-            authenticated_user = authenticate(username=new_user.username,passwoed=request.POST['password'])
-            login(request,authenticated_user)
+            authenticated_user = authenticate(username=new_user.username, password=request.POST['password1'])
+            login(request, authenticated_user)
             return HttpResponseRedirect(reverse('learning_logs:index'))
 
-    context ={'form':form}
-    return render(request,'registration/register.html',context)
+    context = {'form': form}
+    return render(request, 'registration/register.html', context)
