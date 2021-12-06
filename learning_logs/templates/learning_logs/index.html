@@ -2,22 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MD Recoder</title>
+    <title>MD Notes</title>
 </head>
 <body>
 {% extends "learning_logs/base.html" %}
 {% block header %}
     <div class='jumbotron'>
-        <h1>Just log simply.</h1>
+        <h1>Just Record simply.</h1>
     </div>
 {% endblock header %}
 {% block content %}
     <h2>
-       An online, clean, effective markdown log.
+       An online, clean, effective markdown note.
     </h2>
     <h2>
-    <a href="{% url 'users:register' %}">Register an account</a> to make
-    your own Markdown Log, and list the topics you're recording.
+    <a href="{% url 'users:register' %}">Register </a> and start!
 </h2>
 {% endblock content %}
 </body>

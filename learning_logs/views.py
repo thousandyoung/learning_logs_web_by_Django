@@ -43,7 +43,7 @@ def search_entry(request):
 
 
 
-    paginator = Paginator(entries, 7)
+    paginator = Paginator(entries, 5)
     page = request.GET.get('page')
     entry_page = paginator.get_page(page)
     context = {'entries': entries, 'entry_page': entry_page, 'search': search, 'tag': tag}
@@ -56,7 +56,7 @@ def topic(request, topic_id):
     if topic.owner != request.user:
         raise Http404
     entries = topic.entry_set.order_by('date_added')
-    paginator = Paginator(entries, 7)
+    paginator = Paginator(entries, 5)
     page = request.GET.get('page')
     entry_page = paginator.get_page(page)
     context = {'topic': topic, 'entries': entries, 'entry_page': entry_page}
